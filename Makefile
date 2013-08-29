@@ -8,6 +8,7 @@ CROSSBINDIR = $(CROSSDIR)/bin
 TARGET = i586-elf
 
 $(BINUTILS_SRC):
+	cd $(CROSSDIR) && \
 	wget ftp://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz && \
 	tar xzvf binutils-2.22.tar.gz && rm binutils-2.22.tar.gz
 
@@ -17,6 +18,7 @@ build-cross-binutils: $(BINUTILS_SRC)
 	make && make install
 
 $(GCC_SRC):
+	cd $(CROSSDIR) && \
 	wget ftp://ftp.gnu.org/gnu/gcc/gcc-4.6.4/gcc-core-4.6.4.tar.gz && \
 	tar xzvf gcc-core-4.6.4.tar.gz && rm gcc-core-4.6.4.tar.gz && \
 	cd $(GCC_SRC) && contrib/download_prerequisites
