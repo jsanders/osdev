@@ -26,30 +26,25 @@ build-cross-gcc: $(GCC_SRC)
 	$(GCC_SRC)/configure --target=$(TARGET) --prefix="$(CROSSDIR)" --disable-nls --enable-languages=c --without-headers && \
 	make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc
 
-build/:
-	mkdir -p $@
-
-build/boot.o: build/ src/boot.asm
+build/boot.o: src/boot.asm
 	nasm -felf $< -o $@
 
-build/kernel.o: build/ src/kernel.c
+build/kernel.o: src/kernel.c
 	export PATH="$(CROSSBINDIR):$(PATH)" && \
 	i586-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-build/jdsos.bin: build/ build/boot.o build/kernel.o
+build/jdsos.bin: build/boot.o build/kernel.o
 	export PATH="$(CROSSBINDIR):$(PATH)" && \
 	i586-elf-gcc -T src/linker.ld -o $@ -ffreestanding -O2 -nostdlib $? -lgcc
 
 image/boot/jdsos.bin: build/jdsos.bin
 	cp $< $@
 
-dist/:
-	mkdir -p $@
-
-dist/jdsos.iso: dist/ image/boot/jdsos.bin
+dist/jdsos.iso: image/boot/jdsos.bin
 	grub-mkrescue -o $@ image
 
 dist: dist/jdsos.iso
+all: dist
 
 bochs: dist/jdsos.iso
 	bochs -f .bochsrc
