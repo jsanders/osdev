@@ -22,5 +22,7 @@ using Bochs:
     cd /vagrant
     make bochs
 
-Currently, you should expect to see a terminal full of 'x's. Presumably, it will
-do something slightly more interesting at some point!
+Currently, you should expect to see a grub boot screen with a `jdsos` option, which
+when selected draws 24x80 'x's in the terminal.
+
+In theory, it will do something slightly more interesting at some point!
