@@ -40,5 +40,16 @@ build/jdsos.bin: build/ build/boot.o build/kernel.o
 	export PATH="$(CROSSBINDIR):$(PATH)" && \
 	i586-elf-gcc -T src/linker.ld -o $@ -ffreestanding -O2 -nostdlib $? -lgcc
 
+image/boot/jdsos.bin: build/jdsos.bin
+	cp $< $@
+
+dist/:
+	mkdir -p $@
+
+dist/jdsos.iso: dist/ image/boot/jdsos.bin
+	grub-mkrescue -o $@ image
+
+dist: dist/jdsos.iso
+
 clean:
-	rm -f build/*
+	rm -f build/* dist/* image/boot/*.bin
