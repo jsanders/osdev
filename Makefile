@@ -28,6 +28,8 @@ build-cross-gcc: $(GCC_SRC)
 	$(GCC_SRC)/configure --target=$(TARGET) --prefix="$(CROSSDIR)" --disable-nls --enable-languages=c --without-headers && \
 	make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc
 
+cross: build-cross-binutils build-cross-gcc
+
 build/boot.o: src/boot.asm
 	nasm -felf $< -o $@
 
@@ -52,4 +54,4 @@ bochs: dist/jdsos.iso
 	bochs -f .bochsrc
 
 clean:
-	rm -f build/* dist/* image/boot/*.bin
+	rm -rf $(BINUTILS_BUILD) $(GCC_BUILD) build/* dist/* image/boot/*.bin
