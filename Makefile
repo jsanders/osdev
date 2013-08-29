@@ -51,5 +51,8 @@ dist/jdsos.iso: dist/ image/boot/jdsos.bin
 
 dist: dist/jdsos.iso
 
+bochs: dist/jdsos.iso
+	bochs -f .bochsrc
+
 clean:
 	rm -f build/* dist/* image/boot/*.bin
