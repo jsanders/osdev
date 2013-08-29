@@ -25,3 +25,20 @@ build-cross-gcc: $(GCC_SRC)
 	mkdir -p $(GCC_BUILD) && cd $(GCC_BUILD) && \
 	$(GCC_SRC)/configure --target=$(TARGET) --prefix="$(CROSSDIR)" --disable-nls --enable-languages=c --without-headers && \
 	make all-gcc && make all-target-libgcc && make install-gcc && make install-target-libgcc
+
+build/:
+	mkdir -p $@
+
+build/boot.o: build/ src/boot.asm
+	nasm -felf $< -o $@
+
+build/kernel.o: build/ src/kernel.c
+	export PATH="$(CROSSBINDIR):$(PATH)" && \
+	i586-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+build/jdsos.bin: build/ build/boot.o build/kernel.o
+	export PATH="$(CROSSBINDIR):$(PATH)" && \
+	i586-elf-gcc -T linker.ld -o $@ -ffreestanding -O2 -nostdlib $? -lgcc
+
+clean:
+	rm -f build/*
