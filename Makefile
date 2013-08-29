@@ -38,7 +38,7 @@ build/kernel.o: build/ src/kernel.c
 
 build/jdsos.bin: build/ build/boot.o build/kernel.o
 	export PATH="$(CROSSBINDIR):$(PATH)" && \
-	i586-elf-gcc -T linker.ld -o $@ -ffreestanding -O2 -nostdlib $? -lgcc
+	i586-elf-gcc -T src/linker.ld -o $@ -ffreestanding -O2 -nostdlib $? -lgcc
 
 clean:
 	rm -f build/*
