@@ -1,1 +1,4 @@
 .vagrant
+build/*
+dist/*
+image/boot/*
