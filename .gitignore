@@ -8,3 +8,4 @@ cross/gcc-4.6.4
 cross/gcc-build
 cross/binutils-2.22
 cross/binutils-build
+cross/i586-elf/bin
